@@ -1,0 +1,348 @@
+{
+ "as_of": "2026-10-30",
+ "schools": 287,
+ "campuses": 415,
+ "buildings": 383,
+ "schools_by_authorizer": {
+  "SUNY": 192,
+  "Board of Regents": 60,
+  "NYC DOE": 35
+ },
+ "campuses_by_authorizer": {
+  "Board of Regents": 75,
+  "SUNY": 285,
+  "NYC DOE": 55
+ },
+ "campuses_by_borough": {
+  "Bronx": 142,
+  "Brooklyn": 132,
+  "Manhattan": 81,
+  "Queens": 50,
+  "Staten Island": 10
+ },
+ "schools_with_a_campus_in_borough": {
+  "Bronx": 100,
+  "Brooklyn": 91,
+  "Manhattan": 58,
+  "Queens": 36,
+  "Staten Island": 8
+ },
+ "success_academy": {
+  "schools": 38,
+  "campuses": 54
+ },
+ "under_review": [],
+ "excluded_schools": [
+  {
+   "school": "Lamad Arverne Academy Charter School",
+   "authorizer": "SUNY",
+   "reason": "not_open",
+   "detail": "On SUNY's list with no grades for 2026-27 (approved, not yet open)."
+  },
+  {
+   "school": "Minisink Charter School",
+   "authorizer": "SUNY",
+   "reason": "not_open",
+   "detail": "On SUNY's list with no grades for 2026-27 (approved, not yet open)."
+  },
+  {
+   "school": "Next Generation Charter School",
+   "authorizer": "SUNY",
+   "reason": "merged",
+   "detail": "Merged with Nuasin Next Generation Charter School in July 2025 (Regents, May 2025); counted once under Nuasin Next Generation. SUNY shows no grades for Next Generation in 2026-27."
+  },
+  {
+   "school": "Success Academy Charter School - NYC 15",
+   "authorizer": "SUNY",
+   "reason": "not_open",
+   "detail": "On SUNY's list with no grades for 2026-27 (approved, not yet open)."
+  },
+  {
+   "school": "Success Academy Charter School - NYC 18",
+   "authorizer": "SUNY",
+   "reason": "not_open",
+   "detail": "On SUNY's list with no grades for 2026-27 (approved, not yet open)."
+  },
+  {
+   "school": "Collegiate Academy for Mathematics and Personal Awareness Charter School",
+   "authorizer": "Board of Regents",
+   "reason": "merged",
+   "detail": "Renamed MESA Charter High School: East New York, then merged into Math, Engineering and Science Academy Charter High School (Regents, March 9-10, 2026)."
+  },
+  {
+   "school": "Harriet Tubman Charter School",
+   "authorizer": "Board of Regents",
+   "reason": "closed",
+   "detail": "Closed end of June 2026; charter expired June 2026 with no renewal (NYSED 2025-26 eligible renewal list; NYSED Regents actions; News 12 Bronx, May 21, 2026)."
+  },
+  {
+   "school": "South Bronx Classical Charter School VI",
+   "authorizer": "Board of Regents",
+   "reason": "not_open",
+   "detail": "Approved 2025 (state directory) but absent from the Regents roster of operating schools and from the Charter Center's list of fall 2026 openings."
+  },
+  {
+   "school": "Achievement First Charter School 11",
+   "authorizer": "SUNY",
+   "reason": "not_open",
+   "detail": "Not on SUNY's 2026-27 school list."
+  },
+  {
+   "school": "Uncommon New York City Charter School #1",
+   "authorizer": "SUNY",
+   "reason": "not_open",
+   "detail": "Not on SUNY's 2026-27 school list."
+  },
+  {
+   "school": "Harbor Science and Arts Charter School",
+   "authorizer": "SUNY",
+   "reason": "not_operating",
+   "detail": "Not on SUNY's 2026-27 school list; SUNY's school page has been removed and the school's website (hsacs.org, checked Oct 30, 2026) now shows only a contact for student records requests. Treated as closed after 2025-26."
+  },
+  {
+   "school": "Explore Charter School / Empower / Enrich / Exceed / Excel (5 charters)",
+   "authorizer": "SUNY",
+   "reason": "consolidated",
+   "detail": "SUNY's 2026-27 list shows three Explore schools (Canarsie, Crown Heights, Flatbush). Five state-directory charters correspond to these three; two are not separate schools in 2026-27."
+  },
+  {
+   "school": "Success Academy Charter School - Bronx 5 Lower",
+   "authorizer": "SUNY",
+   "reason": "transferred",
+   "detail": "Charter transferred to Strive Charter School (SUNY approval; Regents returned it Jan 2026; SUNY maintained approval; Strive opened Sept 2026; union lawsuit pending)."
+  },
+  {
+   "school": "Boys/Girls Preparatory Charter Schools (Public Prep, 4 charters)",
+   "authorizer": "",
+   "reason": "renamed",
+   "detail": "Counted under 'Bronx Charter School for Excellence 6, 7, 8, 9'. SUNY's 2026-27 list shows Bronx Excellence 6-9 at Public Prep's buildings (681 Kelly St, 192 E 151st St, 263 E 203rd St) with grades matching Public Prep's March 2026 revision notice."
+  },
+  {
+   "school": "Brooklyn Prospect Charter School - CSD 13, 13.2, 15, 15.2",
+   "authorizer": "",
+   "reason": "renamed",
+   "detail": "Counted under 'Brooklyn Prospect Bed-Stuy Clinton Hill, Downtown, Sunset Yards, Windsor Terrace Campuses'. SUNY list names each charter by campus."
+  },
+  {
+   "school": "Math, Engineering, and Science Academy Charter High School 2",
+   "authorizer": "",
+   "reason": "renamed",
+   "detail": "Counted under 'MESA Charter High School: South Brooklyn'. SUNY list."
+  },
+  {
+   "school": "Zeta Charter School - Queens 2",
+   "authorizer": "",
+   "reason": "renamed",
+   "detail": "Counted under 'Zeta Charter School - Queens Flushing'. SUNY list."
+  },
+  {
+   "school": "Great Oaks Kathleen Sherry Charter School",
+   "authorizer": "",
+   "reason": "renamed",
+   "detail": "Counted under 'Great Oaks Charter School'. Regents roster."
+  }
+ ],
+ "listings_not_mapped": [
+  {
+   "listing": "International Leadership Charter Middle School",
+   "address": "3515 BAINBRIDGE AVENUE",
+   "source": "Charter Center finder",
+   "status": "stale",
+   "resolution": "International Leadership's middle school opened here in Sept 2023 (Norwood News), but neither SUNY's 2026-27 list nor the city's 2025-26 list includes it; SUNY lists the school at 3030 Riverdale Ave and 306 W 232nd St."
+  },
+  {
+   "listing": "New York City Charter School of the Arts",
+   "address": "26 Broadway",
+   "source": "Charter Center finder",
+   "status": "stale",
+   "resolution": "NYC Charter School of the Arts: SUNY's 2026-27 list gives 241 Water St (mapped). 26 Broadway was its 2025-26 site."
+  },
+  {
+   "listing": "Urban Dove Team Charter School III",
+   "address": "31-20 37th Street",
+   "source": "Charter Center finder",
+   "status": "stale",
+   "resolution": "Urban Dove Team III: SUNY's 2026-27 list gives 82-06 Northern Blvd (mapped). 31-20 37th St was its 2025-26 site."
+  },
+  {
+   "listing": "Success Academy - Laurelton Middle School",
+   "address": "136-25 218th Street",
+   "source": "Success Academy site",
+   "status": "not_open",
+   "resolution": "Success Academy Laurelton Middle School: Success Academy's page says it opens Fall 2027."
+  },
+  {
+   "listing": "Success Academy - Bensonhurst Middle School",
+   "address": "7801 Bay Parkway, 1st Floor",
+   "source": "Success Academy site",
+   "status": "not_open",
+   "resolution": "Success Academy Bensonhurst Middle School: Success Academy's page says it opens for 2027-28."
+  }
+ ],
+ "networks": [
+  {
+   "network": "Success Academy",
+   "schools": 38,
+   "campuses": 54
+  },
+  {
+   "network": "Achievement First",
+   "schools": 11,
+   "campuses": 19
+  },
+  {
+   "network": "Uncommon Schools",
+   "schools": 10,
+   "campuses": 19
+  },
+  {
+   "network": "KIPP NYC",
+   "schools": 9,
+   "campuses": 17
+  },
+  {
+   "network": "Ascend",
+   "schools": 10,
+   "campuses": 16
+  },
+  {
+   "network": "Excellence Community Schools",
+   "schools": 9,
+   "campuses": 13
+  },
+  {
+   "network": "Zeta Charter Schools",
+   "schools": 7,
+   "campuses": 11
+  },
+  {
+   "network": "Icahn Charter Schools",
+   "schools": 7,
+   "campuses": 10
+  },
+  {
+   "network": "Brilla (Seton Education)",
+   "schools": 4,
+   "campuses": 7
+  },
+  {
+   "network": "United Charter High Schools",
+   "schools": 7,
+   "campuses": 7
+  },
+  {
+   "network": "Brooklyn Prospect",
+   "schools": 4,
+   "campuses": 6
+  },
+  {
+   "network": "Classical Charter Schools",
+   "schools": 5,
+   "campuses": 6
+  },
+  {
+   "network": "Democracy Prep",
+   "schools": 3,
+   "campuses": 6
+  },
+  {
+   "network": "Family Life Academy",
+   "schools": 4,
+   "campuses": 5
+  },
+  {
+   "network": "Urban Dove Team",
+   "schools": 5,
+   "campuses": 5
+  },
+  {
+   "network": "Amber Charter Schools",
+   "schools": 3,
+   "campuses": 4
+  },
+  {
+   "network": "DREAM",
+   "schools": 3,
+   "campuses": 4
+  },
+  {
+   "network": "Explore Schools",
+   "schools": 3,
+   "campuses": 4
+  },
+  {
+   "network": "Harlem Village Academies",
+   "schools": 3,
+   "campuses": 4
+  },
+  {
+   "network": "Our World Neighborhood",
+   "schools": 3,
+   "campuses": 4
+  },
+  {
+   "network": "Independent and smaller networks",
+   "schools": 139,
+   "campuses": 194
+  }
+ ],
+ "campuses_by_district": {
+  "9": 25,
+  "7": 45,
+  "10": 3,
+  "12": 13,
+  "8": 20,
+  "11": 20,
+  "19": 16,
+  "23": 8,
+  "32": 9,
+  "17": 14,
+  "13": 16,
+  "14": 12,
+  "16": 13,
+  "18": 15,
+  "22": 10,
+  "15": 12,
+  "21": 6,
+  "20": 1,
+  "4": 15,
+  "6": 22,
+  "2": 8,
+  "5": 20,
+  "3": 10,
+  "1": 3,
+  "30": 11,
+  "29": 7,
+  "24": 13,
+  "27": 11,
+  "28": 7,
+  "25": 1,
+  "31": 10
+ },
+ "findings": [
+  {
+   "figure": "66%",
+   "text": "of campuses are in the Bronx and Brooklyn (274 of 415). Staten Island has 10."
+  },
+  {
+   "figure": "67%",
+   "text": "of schools are authorized by SUNY (192 of 287), including every Success Academy, Uncommon and Achievement First school."
+  },
+  {
+   "figure": "148",
+   "text": "schools belong to one of 20 networks with three or more schools; the other 139 are independent or part of smaller networks."
+  },
+  {
+   "figure": "54",
+   "text": "Success Academy campuses, the largest network: 38 schools, 13% of all campuses."
+  },
+  {
+   "figure": "104",
+   "text": "schools run more than one campus, and 28 buildings are shared by two or more different schools."
+  },
+  {
+   "figure": "7, 9, 6",
+   "text": "are the community school districts with the most campuses (District 7, Bronx: 45; District 9, Bronx: 25; District 6, Manhattan: 22)."
+  }
+ ]
+}

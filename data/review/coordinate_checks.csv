@@ -1,0 +1,22 @@
+school,address,sources_over_150m_from_geocode,resolution
+Bedford Stuyvesant New Beginnings Charter School,217 North 10th Street,Charter Center 217 m; original 217 m,"NYC GeoSearch for 215 N 10th St, the city's address for this building (217 matched 5 N 10th St)"
+Bronx Charter School for Better Learning,3740 Baychester Avenue,City 2025-26 165 m,Same building; difference of 150-270 m is frontage geocode vs building centroid. Geocode kept.
+Brooklyn Prospect Charter School Sunset Yards Campus,341 39th Street,City 2025-26 83982 m,City record longitude typo (-73.007 for -74.007); other city records at this address agree with the geocode.
+Community Partnership Charter School,241 Emerson Place,City 2025-26 227 m,Same building; difference of 150-270 m is frontage geocode vs building centroid. Geocode kept.
+KIPP Bronx Charter School III,1504 Macombs Road,City 2025-26 160 m,Same building; difference of 150-270 m is frontage geocode vs building centroid. Geocode kept.
+Middle Village Preparatory Charter School,68-02 Metropolitan Avenue,City 2025-26 185 m,Same building; difference of 150-270 m is frontage geocode vs building centroid. Geocode kept.
+Our World Neighborhood Charter School 3,108-68 Roosevelt Avenue,City 2025-26 184 m,Same building; difference of 150-270 m is frontage geocode vs building centroid. Geocode kept.
+Success Academy Charter School - Bed Stuy 3,787 Lafayette Avenue,Success Academy site 901 m,Success Academy site point is about 900 m off; Charter Center and the city agree with the geocode.
+Success Academy Charter School - Harlem 5,175 West 134th Street,City 2025-26 216 m,Same building; difference of 150-270 m is frontage geocode vs building centroid. Geocode kept.
+Success Academy Charter School - Sheepshead Bay,3000 Avenue X,City 2025-26 3133 m,"City record for Success Academy has a transposed longitude (-73.974 for -73.937); city's own UCHS III record, Success Academy site and Charter Center agree with the geocode."
+Uncommon Kings Charter School NYC,999 Jamaica Avenue,City 2025-26 267 m,Same building; difference of 150-270 m is frontage geocode vs building centroid. Geocode kept.
+Zeta Charter School - Bronx Mount Eden,1475 Macombs Road,City 2025-26 1816 m,"City point is about 1.8 km south of the address; Charter Center and the geocode agree, consistent with neighboring 1504 Macombs Rd."
+Hebrew Language Academy Charter School,2186 MILL AVENUE,City 2025-26 233 m,Same building; difference of 150-270 m is frontage geocode vs building centroid. Geocode kept.
+John W Lavelle Preparatory Charter School,1 TELEPORT DRIVE,City 2025-26 244 m,Same building; difference of 150-270 m is frontage geocode vs building centroid. Geocode kept.
+John W Lavelle Preparatory Charter School,1441 South Avenue,City 2025-26 158 m; City 2025-26 158 m,Same building; difference of 150-270 m is frontage geocode vs building centroid. Geocode kept.
+New Ventures Charter School,1441 South Avenue,City 2025-26 158 m; City 2025-26 158 m; original 2044 m,Same building; difference of 150-270 m is frontage geocode vs building centroid. Geocode kept.
+Early College Charter School,1441 South Avenue,City 2025-26 158 m; City 2025-26 158 m,Same building; difference of 150-270 m is frontage geocode vs building centroid. Geocode kept.
+Renaissance Charter School,35-59 81ST STREET,City 2025-26 164 m,Same building; difference of 150-270 m is frontage geocode vs building centroid. Geocode kept.
+United Charter High School for Advanced Math and Science III,3000 Avenue X,City 2025-26 3133 m,"City record for Success Academy has a transposed longitude (-73.974 for -73.937); city's own UCHS III record, Success Academy site and Charter Center agree with the geocode."
+Urban Dove Team Charter School II,671 Prospect Ave,City 2025-26 190 m,Same building; difference of 150-270 m is frontage geocode vs building centroid. Geocode kept.
+VOICE Charter School of New York,36-49 11TH STREET,Charter Center 217 m; original 217 m,Same building; difference of 150-270 m is frontage geocode vs building centroid. Geocode kept.

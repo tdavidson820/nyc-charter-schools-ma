@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NYC Charter Schools Map</title>
+<meta name="description" content="Every charter school operating in New York City on October 30, 2026: 287 schools on 415 campuses, verified against the authorizers and independent sources.">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">New York City · 2026–27 school year · Data as of October 30, 2026</p>
+    <h1>How many charter schools are there in New York City?</h1>
+    <p class="answer"><span class="num" data-k="schools">287</span> schools operating on <span class="num" data-k="campuses">415</span> campuses across the five boroughs.</p>
+    <p class="method-link"><a href="#verified">How these numbers were verified</a> · <a id="link-validation-top" href="VALIDATION.md">Full validation report</a></p>
+
+    <aside class="definition" aria-labelledby="def-h">
+      <h2 id="def-h">What we counted</h2>
+      <p>A <strong>charter school</strong> is an independent public school operating under a charter granted under <a href="https://www.nysenate.gov/legislation/laws/EDN/A56" target="_blank" rel="noopener">Article 56 of the New York State Education Law</a>, authorized by the <strong>SUNY Trustees</strong>, the <strong>NYS Board of Regents</strong> or the <strong>NYC Schools Chancellor</strong>. We count schools open with students in 2026–27 with a campus in the five boroughs. A <em>school</em> is one legal charter; a <em>campus</em> is that school operating in a building. Schools approved but not yet open, closed or merged are not counted, and are <a href="#not-mapped">listed below</a> with the reason.</p>
+    </aside>
+    <div class="figures" aria-label="Headline numbers">
+      <div class="figure"><span class="big" data-k="schools">287</span><span class="cap">charter schools</span><span class="sub">legal charters, from the authorizers' own lists</span></div>
+      <div class="figure"><span class="big" data-k="campuses">415</span><span class="cap">campuses</span><span class="sub">a school operating in a building</span></div>
+      <div class="figure"><span class="big" data-k="buildings">383</span><span class="cap">buildings</span><span class="sub">some buildings house several schools</span></div>
+    </div>
+
+  </div>
+</header>
+
+<section class="atlas" aria-labelledby="map-h">
+  <div class="wrap">
+    <div class="atlas-head">
+      <h2 id="map-h" class="section-h">The map</h2>
+      <nav class="zoom" id="zoom" aria-label="Focus on a borough"></nav>
+    </div>
+
+    <div class="atlas-grid">
+      <aside class="panel" aria-label="Filters and legend">
+        <div class="counts" aria-live="polite">
+          <div><span class="n" id="s-schools">–</span><span class="l">schools</span></div>
+          <div><span class="n" id="s-campuses">–</span><span class="l">campuses</span></div>
+          <div><span class="n" id="s-buildings">–</span><span class="l">buildings</span></div>
+        </div>
+        <div class="actions">
+          <button type="button" id="reset" class="btn">Reset filters</button>
+          <button type="button" id="csv" class="btn">Export CSV</button>
+        </div>
+
+        <fieldset>
+          <legend>Authorizer</legend>
+          <div id="f-auth" class="chips"></div>
+        </fieldset>
+
+        <label class="field" for="f-net"><span class="lbl">Network</span>
+          <select id="f-net"><option value="">All networks</option></select>
+        </label>
+
+        <div class="toggles">
+          <label for="f-sa"><input type="checkbox" id="f-sa" checked> Ring Success Academy campuses</label>
+          <label for="f-dist"><input type="checkbox" id="f-dist" checked> Shade districts by campus count</label>
+        </div>
+
+        <div class="legend" aria-label="Map legend">
+          <h3>Reading the map</h3>
+          <ul>
+            <li><svg width="18" height="18" aria-hidden="true"><circle cx="9" cy="9" r="6" class="lg-suny"/></svg>Authorized by SUNY Trustees</li>
+            <li><svg width="18" height="18" aria-hidden="true"><circle cx="9" cy="9" r="6" class="lg-regents"/></svg>Authorized by the Board of Regents</li>
+            <li><svg width="18" height="18" aria-hidden="true"><circle cx="9" cy="9" r="6" class="lg-doe"/></svg>Authorized by the NYC Chancellor</li>
+            <li><svg width="18" height="18" aria-hidden="true"><circle cx="9" cy="9" r="6" class="lg-multi"/></svg>Building shared by schools with different authorizers</li>
+            <li><svg width="18" height="18" aria-hidden="true"><circle cx="9" cy="9" r="6" class="lg-sa"/></svg>Success Academy campus</li>
+            <li><svg width="18" height="18" aria-hidden="true"><circle cx="5" cy="9" r="3.5" class="lg-size"/><circle cx="13" cy="9" r="5" class="lg-size"/></svg>One dot per building; larger dots hold more campuses</li>
+            <li class="ramp-li"><span>District shading, campuses per district</span><span class="ramp-scale" aria-hidden="true"><span><i class="r1"></i>1–5</span><span><i class="r2"></i>6–11</span><span><i class="r3"></i>12–19</span><span><i class="r4"></i>20+</span></span></li>
+          </ul>
+        </div>
+      </aside>
+
+      <div class="map-wrap">
+        <div id="map" aria-label="Map of charter school campuses in New York City"></div>
+      </div>
+
+      <aside class="list" aria-label="School list">
+        <label class="search" for="q"><span class="sr-only">Search schools</span>
+          <input id="q" type="search" placeholder="Search schools or addresses" autocomplete="off">
+        </label>
+        <p class="list-meta" id="list-meta"></p>
+        <ol id="school-list" class="schools"></ol>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="breakdown" aria-labelledby="bd-h">
+  <div class="wrap">
+    <h2 id="bd-h" class="section-h">The breakdown</h2>
+    <div class="charts">
+      <figure class="chart">
+        <figcaption><strong>Campuses by borough</strong><span class="key" id="key-auth"></span></figcaption>
+        <div id="c-borough" class="bars"></div>
+      </figure>
+      <figure class="chart">
+        <figcaption><strong>Schools by authorizer</strong></figcaption>
+        <div id="c-auth" class="bars"></div>
+      </figure>
+      <figure class="chart">
+        <figcaption><strong>Largest networks</strong><span class="key">campuses</span></figcaption>
+        <div id="c-net" class="bars"></div>
+        <p class="note" id="net-note"></p>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="analysis" aria-labelledby="an-h">
+  <div class="wrap">
+    <h2 id="an-h" class="section-h">What the data shows</h2>
+    <div class="findings" id="findings"></div>
+
+    <h2 class="section-h" id="verified">How the count was verified</h2>
+    <ol class="steps">
+      <li><h3>Legal list first</h3><p>The 287 schools come from the authorizers: SUNY's 2026–27 school list, the Board of Regents roster adjusted for every Regents action through May 2026, and the state directory for Chancellor schools. One operating school missing from SUNY's list, renewed through 2029, was added back.</p></li>
+      <li><h3>Two sources per campus</h3><p>Every campus is confirmed by at least two independent sources: the authorizer's site list, the NYC Charter School Center finder, the city's 2025–26 site list, the school's website, or dated 2026 documents.</p></li>
+      <li><h3>Every location checked</h3><p>All addresses were placed with the city's geocoder and compared across sources. Three geocoder errors and four source errors were found and corrected.</p></li>
+      <li><h3>Counts reconciled</h3><p>All 420 listings in the Charter Center's finder are accounted for one by one: a campus here, a second listing for the same campus, an old address, or a test record.</p></li>
+      <li><h3>Blind audit</h3><p>Thirty randomly drawn schools were rechecked by an independent pass that never saw this dataset. All 39 addresses it found are here, with no contradictions.</p></li>
+    </ol>
+    <p class="more">Every source, checksum and judgment call is in the <a id="link-validation" href="VALIDATION.md">validation report</a>.</p>
+
+    <h2 class="section-h" id="not-mapped">Not on the map, and why</h2>
+    <div class="nm">
+      <details>
+        <summary>Schools on state lists that are not counted <span id="n-ex" class="pill"></span></summary>
+        <p class="note">Official state records may include schools that are not operating in NYC during 2026–27, including schools not yet open, closed schools, or merged schools. The table identifies each exclusion and its reason.</p>
+        <table id="t-excluded"></table>
+      </details>
+      <details>
+        <summary>Directory listings that are not 2026–27 campuses <span id="n-ls" class="pill"></span></summary>
+        <p class="note">Directory entries are not always unique, current campuses. These entries may be duplicates, former addresses, or test listings; each is reconciled below.</p>
+        <table id="t-listings"></table>
+      </details>
+      <p class="note" id="review-line">Under review: none. Every campus of every counted school was confirmed.</p>
+    </div>
+
+    <h2 class="section-h">Sources</h2>
+    <ul class="sources">
+      <li><a href="https://www.newyorkcharters.org/charter-schools/" target="_blank" rel="noopener">SUNY Charter Schools Institute school list</a>, 2026–27 grades and sites, updated September 17, 2026</li>
+      <li><a href="https://www.nysed.gov/charter-schools/charter-schools-directory" target="_blank" rel="noopener">NYSED Charter Schools Directory</a> and <a href="https://www.nysed.gov/charter-schools/actions-taken-board-regents" target="_blank" rel="noopener">Board of Regents actions</a></li>
+      <li><a href="https://findnyccharterschools.org/" target="_blank" rel="noopener">NYC Charter School Center school finder</a>, captured October 30, 2026</li>
+      <li>NYC DOE Office of Pupil Transportation, <a href="https://data.cityofnewyork.us/d/hg3c-2jsy" target="_blank" rel="noopener">Transportation Sites</a>, 2025–26, NYC Open Data</li>
+      <li><a href="https://www.successacademies.org/schools/" target="_blank" rel="noopener">Success Academy school pages</a> and individual school websites</li>
+      <li>Locations: <a href="https://geosearch.planninglabs.nyc/" target="_blank" rel="noopener">NYC GeoSearch</a>. Boundaries: NYC Department of City Planning. Networks are grouped by school name.</li>
+    </ul>
+    <p class="files">Data: <a href="data/campuses.csv">campuses.csv</a> · <a href="data/legal_schools.csv">legal_schools.csv</a> · <a href="data/legal_schools_excluded.csv">legal_schools_excluded.csv</a> · <a href="data/review/count_reconciliation.csv">count_reconciliation.csv</a></p>
+  </div>
+</section>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
