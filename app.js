@@ -67,13 +67,48 @@
   const map = L.map("map", { zoomSnap: 0.25, scrollWheelZoom: false, zoomControl: true });
   map.on("click focus", () => map.scrollWheelZoom.enable());
   map.on("mouseout", () => map.scrollWheelZoom.disable());
-  // Self-drawn basemap: borough land on a water ground. No third-party tiles, so nothing can expire or need a key.
   map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
   map.attributionControl.addAttribution("Boundaries: NYC Department of City Planning");
 
+  // ---------- Basemap ----------
+  // CARTO stopped serving its street tiles without a key on September 25, 2026 (keyless requests now
+  // return "API KEY REQUIRED" images). A free key, with no CARTO account, restores the same light street
+  // map: request one at https://carto.com/basemaps/apikey/ and restrict it to tdavidson820.github.io.
+  // With no key, or if the tiles fail to load, the page falls back to the self-drawn basemap below.
+  const CARTO_KEY = "";
+  const drawnStyle = { stroke: false, fillColor: css("--land"), fillOpacity: 1 };
+  const landLayer = L.geoJSON(boroughs, { style: { ...drawnStyle, fillOpacity: 0 }, interactive: false }).addTo(map);
+  // Layer order: land and district shading (400), borough labels (450), school markers (500), popups (700).
+  map.createPane("labels");
+  map.getPane("labels").style.zIndex = 450;
+  map.getPane("labels").style.pointerEvents = "none";
+  map.createPane("schools");
+  map.getPane("schools").style.zIndex = 500;
+  // Label anchors sit in quieter parts of each borough so they do not cover dense clusters of schools.
+  const BORO_LABELS = { Bronx: [40.872, -73.815], Manhattan: [40.7812, -73.9665], Queens: [40.708, -73.79], Brooklyn: [40.612, -73.985], "Staten Island": [40.575, -74.155] };
+  const labelLayer = L.layerGroup(Object.entries(BORO_LABELS).map(([name, ll]) => L.marker(ll, {
+    pane: "labels", interactive: false, keyboard: false,
+    icon: L.divIcon({ className: "", iconSize: null, html: `<span style="display:block;transform:translate(-50%,-50%);white-space:nowrap;font:600 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#7d8894;text-shadow:0 0 3px #fff,0 0 3px #fff">${name}</span>` }),
+  })));
+  const useDrawn = () => {
+    landLayer.setStyle(drawnStyle);
+    labelLayer.addTo(map);
+    const sync = () => (map.getZoom() >= 13 ? map.removeLayer(labelLayer) : labelLayer.addTo(map));
+    map.on("zoomend", sync); sync();
+  };
+  if (CARTO_KEY) {
+    const tiles = L.tileLayer(`https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png?key=${encodeURIComponent(CARTO_KEY)}`, {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: "abcd", maxZoom: 19,
+    }).addTo(map);
+    let failures = 0;
+    tiles.on("tileerror", () => { if (++failures === 4) { map.removeLayer(tiles); useDrawn(); } });
+  } else {
+    useDrawn();
+  }
+
   const counts = S.campuses_by_district;
   const ramp = (n) => (n >= 20 ? css("--d4") : n >= 12 ? css("--d3") : n >= 6 ? css("--d2") : css("--d1"));
-  const landLayer = L.geoJSON(boroughs, { style: { stroke: false, fillColor: css("--land"), fillOpacity: 1 }, interactive: false }).addTo(map);
   const distStyle = (f) => ({ color: "#8895a3", weight: 0.6, dashArray: "3 3", fillColor: ramp(counts[String(f.properties.district)] || 0), fillOpacity: state.dist ? 0.55 : 0 });
   const state = { boro: "", auth: new Set(AUTH.map((a) => a.key)), net: "", q: "", sa: true, dist: true };
   const distLayer = L.geoJSON(districts, {
@@ -81,7 +116,6 @@
     onEachFeature: (f, l) => l.bindTooltip(`District ${f.properties.district}: ${counts[String(f.properties.district)] || 0} campuses`, { sticky: true, className: "dist-tip" }),
   }).addTo(map);
   const boroLayer = L.geoJSON(boroughs, { style: { color: "#4a5561", weight: 1.3, fill: false }, interactive: false }).addTo(map);
-  // If street tiles cannot load (offline or a sandboxed preview), draw land on a water ground instead.
 
   const boroBounds = {};
   boroLayer.eachLayer((l) => { boroBounds[l.feature.properties.name] = l.getBounds(); });
@@ -145,6 +179,7 @@
       const base = { color: sa ? css("--sa") : "#ffffff", weight: sa ? 2.6 : 1.3 };
       const [lon, lat] = f.geometry.coordinates;
       const m = L.circleMarker([lat, lon], {
+        pane: "schools",
         radius: 5.5 + Math.min(4.5, (cs.length - 1) * 1.6),
         fillColor: auths.size > 1 ? css("--multi") : AC[[...auths][0]], fillOpacity: 0.92, ...base,
       }).bindPopup(popupHtml(p, cs), { maxWidth: 360 });
@@ -209,22 +244,27 @@
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
 
-  // Fit the city once the map has a real size. If the page loads before the map panel is laid out
-  // (for example in a background tab), Leaflet sees a 0 x 0 map and would zoom all the way in.
-  let fitted = false, userMoved = false;
-  map.on("zoomstart dragstart", (e) => { if (fitted && e.hard !== true) userMoved = true; });
-  const fitCity = () => {
-    const s = map.getContainer().getBoundingClientRect();
-    if (s.width > 0 && s.height > 0) { map.invalidateSize(); map.fitBounds(cityBounds, { padding: [8, 8], animate: false }); fitted = true; userMoved = false; }
+  // Fit the whole city exactly once, as soon as the map container has real dimensions. If the page loads
+  // before the map panel is laid out (for example in a background tab), Leaflet would see a 0 x 0 map and
+  // zoom all the way in, so until then the map holds a provisional view that no one can see or touch.
+  // After the first fit, size changes only call invalidateSize(), which keeps the current center and zoom:
+  // the view never resets on its own after someone has looked at or moved the map.
+  let fitted = false;
+  const hasSize = () => { const r = map.getContainer().getBoundingClientRect(); return r.width > 0 && r.height > 0; };
+  const fitOnce = () => {
+    if (fitted || !hasSize()) return;
+    map.invalidateSize({ pan: false });
+    map.fitBounds(cityBounds, { padding: [8, 8], animate: false });
+    fitted = true;
   };
-  fitCity();
-  if (!fitted) map.setView(cityBounds.getCenter(), 10);
+  map.setView(cityBounds.getCenter(), 10, { animate: false }); // provisional view while the container has no size
+  fitOnce();
   new ResizeObserver(() => {
-    map.invalidateSize();
-    if (!fitted || !userMoved) fitCity();
+    if (!hasSize()) return;
+    if (fitted) map.invalidateSize({ debounceMoveend: true }); // default pan keeps the geographic center fixed
+    else fitOnce();
   }).observe(map.getContainer());
   render();
-  window.addEventListener("resize", () => map.invalidateSize());
 
   // ---------- Analysis ----------
   $("findings").innerHTML = S.findings.map((f) => `<div class="finding"><span class="fig">${esc(f.figure)}</span><p>${esc(f.text)}</p></div>`).join("");
