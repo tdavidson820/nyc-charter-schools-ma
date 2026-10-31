@@ -2,7 +2,7 @@
 
 A map of every charter school operating in New York City on October 30, 2026: **287 schools on 415 campuses** across the five boroughs, each campus confirmed by at least two independent sources.
 
-**Live map:** `https://<your-username>.github.io/nyc-charter-map/` (replace with your GitHub Pages address after the first deploy)
+**Live map:** [tdavidson820.github.io/nyc-charter-schools-ma](https://tdavidson820.github.io/nyc-charter-schools-ma/)
 **How every number was checked:** [VALIDATION.md](VALIDATION.md)
 
 ## What it shows

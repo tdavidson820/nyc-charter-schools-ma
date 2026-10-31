@@ -67,14 +67,13 @@
   const map = L.map("map", { zoomSnap: 0.25, scrollWheelZoom: false, zoomControl: true });
   map.on("click focus", () => map.scrollWheelZoom.enable());
   map.on("mouseout", () => map.scrollWheelZoom.disable());
-  const tiles = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
-    subdomains: "abcd", maxZoom: 19,
-  }).addTo(map);
+  // Self-drawn basemap: borough land on a water ground. No third-party tiles, so nothing can expire or need a key.
+  map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
+  map.attributionControl.addAttribution("Boundaries: NYC Department of City Planning");
 
   const counts = S.campuses_by_district;
   const ramp = (n) => (n >= 20 ? css("--d4") : n >= 12 ? css("--d3") : n >= 6 ? css("--d2") : css("--d1"));
-  const landLayer = L.geoJSON(boroughs, { style: { stroke: false, fillColor: css("--land"), fillOpacity: 0 }, interactive: false }).addTo(map);
+  const landLayer = L.geoJSON(boroughs, { style: { stroke: false, fillColor: css("--land"), fillOpacity: 1 }, interactive: false }).addTo(map);
   const distStyle = (f) => ({ color: "#8895a3", weight: 0.6, dashArray: "3 3", fillColor: ramp(counts[String(f.properties.district)] || 0), fillOpacity: state.dist ? 0.55 : 0 });
   const state = { boro: "", auth: new Set(AUTH.map((a) => a.key)), net: "", q: "", sa: true, dist: true };
   const distLayer = L.geoJSON(districts, {
@@ -83,8 +82,6 @@
   }).addTo(map);
   const boroLayer = L.geoJSON(boroughs, { style: { color: "#4a5561", weight: 1.3, fill: false }, interactive: false }).addTo(map);
   // If street tiles cannot load (offline or a sandboxed preview), draw land on a water ground instead.
-  let tileFail = false;
-  tiles.on("tileerror", () => { if (!tileFail) { tileFail = true; landLayer.setStyle({ fillOpacity: 1 }); } });
 
   const boroBounds = {};
   boroLayer.eachLayer((l) => { boroBounds[l.feature.properties.name] = l.getBounds(); });
@@ -212,7 +209,20 @@
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
 
-  map.fitBounds(cityBounds, { padding: [8, 8] });
+  // Fit the city once the map has a real size. If the page loads before the map panel is laid out
+  // (for example in a background tab), Leaflet sees a 0 x 0 map and would zoom all the way in.
+  let fitted = false, userMoved = false;
+  map.on("zoomstart dragstart", (e) => { if (fitted && e.hard !== true) userMoved = true; });
+  const fitCity = () => {
+    const s = map.getContainer().getBoundingClientRect();
+    if (s.width > 0 && s.height > 0) { map.invalidateSize(); map.fitBounds(cityBounds, { padding: [8, 8], animate: false }); fitted = true; userMoved = false; }
+  };
+  fitCity();
+  if (!fitted) map.setView(cityBounds.getCenter(), 10);
+  new ResizeObserver(() => {
+    map.invalidateSize();
+    if (!fitted || !userMoved) fitCity();
+  }).observe(map.getContainer());
   render();
   window.addEventListener("resize", () => map.invalidateSize());
 
